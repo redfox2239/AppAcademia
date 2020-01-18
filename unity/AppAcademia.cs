@@ -292,6 +292,37 @@ static class GameObjectExtensions
         var animator = obj.GetComponent<Animator>();
         animator.speed = (float)speed;
     }
+    public static bool _手で触ったとき_てでさわったとき(this GameObject obj)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+
+        if (hit2d)
+        {
+            if (obj == hit2d.transform.gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static bool _クリックしたとき_くりっくしたとき(this GameObject obj)
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+
+            if (hit2d)
+            {
+                if (obj == hit2d.transform.gameObject)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 class _加速度センサー_かそくどセンサー
 {
@@ -380,6 +411,9 @@ class _タッチ
     {
         return (double)Input.mousePosition.y;
     }
+}
+class _画面_がめん
+{
     public static bool 手で触り始めたら_さわりはじめたら()
     {
         if (EventSystem.current != null)
@@ -396,9 +430,6 @@ class _タッチ
         }
         return Input.GetMouseButtonUp(0);
     }
-}
-class _画面_がめん
-{
     public static float 高さ_たかさ()
     {
         return Camera.main.orthographicSize;
