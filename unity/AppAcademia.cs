@@ -129,8 +129,15 @@ static class GameObjectExtensions
     }
     public static void _画像変更_がぞうへんこう(this GameObject obj, string str)
     {
-        var sp = Resources.Load<Sprite>("str");
-        obj.GetComponent<Image>().sprite = sp;
+        var sp = Resources.Load<Sprite>(str);
+        if (obj.GetComponent<Image>() != null)
+        {
+            obj.GetComponent<Image>().sprite = sp;
+        }
+        else
+        {
+            obj.GetComponent<SpriteRenderer>().sprite = sp;
+        }
     }
     public static void _向きを変える(this GameObject obj, string str = "")
     {
