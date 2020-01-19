@@ -289,6 +289,12 @@ static class GameObjectExtensions
             return "左";
         }
     }
+    public static void _動きを止める_うごきをとめる(this GameObject obj)
+    {
+        var rb2 = obj.GetComponent<Rigidbody2D>();
+        rb2.velocity = new Vector2(0, 0);
+        rb2.angularVelocity = 0.0f;
+    }
     public static void _アニメーションの変更_アニメーションのへんこう(this GameObject obj, string str)
     {
         var animator = obj.GetComponent<Animator>();
