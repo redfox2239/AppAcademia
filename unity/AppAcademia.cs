@@ -385,7 +385,7 @@ class _キーボード
     {
         return Input.GetKeyDown(KeyCode.LeftArrow);
     }
-    public static bool 上をおしたら_みぎをおしたら()
+    public static bool 上をおしたら_うえをおしたら()
     {
         return Input.GetKeyDown(KeyCode.UpArrow);
     }
