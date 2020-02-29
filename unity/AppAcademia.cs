@@ -16,6 +16,7 @@ public class AppAcademiaMonoBehaviour : MonoBehaviour
     }
     public virtual void スタートしたとき() { }
     public virtual void アップデートしたとき() { }
+    public virtual void 一定間隔でアップデートしたとき_いっていかんかくでアップデートしたとき() { }
     public virtual void 触れ始めたとき_ふれはじめたとき(Collider2D collision) { }
     public virtual void 触れているとき_ふれているとき(Collider2D collision) { }
     public virtual void 触れ終わりのとき_ふれおわりのとき(Collider2D collision) { }
@@ -24,11 +25,16 @@ public class AppAcademiaMonoBehaviour : MonoBehaviour
     public virtual void 衝突終わりのとき_しょうとつおわりのとき(Collision2D collision) { }
     private void Start()
     {
+        Time.fixedDeltaTime = 0.01f;
         スタートしたとき();
     }
     private void Update()
     {
         アップデートしたとき();
+    }
+    private void FixedUpdate()
+    {
+        一定間隔でアップデートしたとき_いっていかんかくでアップデートしたとき();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -476,5 +482,12 @@ class SingletonClass
         {
             SingletonClass.GetSingleton().members.Add(key, value);
         }
+    }
+}
+class 時間
+{
+    public static double 経過時間()
+    {
+        return (double)Time.deltaTime;
     }
 }
