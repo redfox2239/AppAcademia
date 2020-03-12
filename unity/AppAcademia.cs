@@ -145,29 +145,16 @@ static class GameObjectExtensions
             obj.GetComponent<SpriteRenderer>().sprite = sp;
         }
     }
-    public static void _向きを変える(this GameObject obj, string str = "")
+    public static void _左右の向きを反対にする_さゆうのむきをはんたいにする(this GameObject obj)
     {
         var initScale = obj.transform.localScale;
-        if (str == "")
-        {
-            initScale.x = (-1) * initScale.x;
-        }
-        else if (str == "右")
-        {
-            initScale.x = 1;
-        }
-        else if (str == "左")
-        {
-            initScale.x = -1;
-        }
-        else if (str == "上")
-        {
-            initScale.y = 1;
-        }
-        else if (str == "下")
-        {
-            initScale.y = -1;
-        }
+        initScale.x = (-1) * initScale.x;
+        obj.transform.transform.localScale = initScale;
+    }
+    public static void _上下の向きを反対にする_じょうげのむきをはんたいにする(this GameObject obj)
+    {
+        var initScale = obj.transform.localScale;
+        initScale.y = (-1) * initScale.y;
         obj.transform.transform.localScale = initScale;
     }
     public static void _移動する_いどうする(this GameObject obj, double x, double y, double z)
