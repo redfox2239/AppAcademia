@@ -17,12 +17,12 @@ public class AppAcademiaMonoBehaviour : MonoBehaviour
     public virtual void スタートしたとき() { }
     public virtual void アップデートしたとき() { }
     public virtual void 一定間隔でアップデートしたとき_いっていかんかくでアップデートしたとき() { }
-    public virtual void 触れ始めたとき_ふれはじめたとき(Collider2D collision) { }
-    public virtual void 触れているとき_ふれているとき(Collider2D collision) { }
-    public virtual void 触れ終わりのとき_ふれおわりのとき(Collider2D collision) { }
-    public virtual void 衝突し始めたとき_しょうとつしはじめたとき(Collision2D collision) { }
-    public virtual void 衝突しているとき_しょうとつしているとき(Collision2D collision) { }
-    public virtual void 衝突終わりのとき_しょうとつおわりのとき(Collision2D collision) { }
+    public virtual void 触れ始めたとき_ふれはじめたとき(GameObject 触れたスプライト) { }
+    public virtual void 触れているとき_ふれているとき(GameObject 触れたスプライト) { }
+    public virtual void 触れ終わりのとき_ふれおわりのとき(GameObject 触れたスプライト) { }
+    public virtual void 衝突し始めたとき_しょうとつしはじめたとき(GameObject 衝突したスプライト) { }
+    public virtual void 衝突しているとき_しょうとつしているとき(GameObject 衝突したスプライト) { }
+    public virtual void 衝突終わりのとき_しょうとつおわりのとき(GameObject 衝突したスプライト) { }
     private void Start()
     {
         Time.fixedDeltaTime = 0.01f;
@@ -38,27 +38,27 @@ public class AppAcademiaMonoBehaviour : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        触れ始めたとき_ふれはじめたとき(collision);
+        触れ始めたとき_ふれはじめたとき(collision.gameObject);
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        触れているとき_ふれているとき(collision);
+        触れているとき_ふれているとき(collision.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        触れ終わりのとき_ふれおわりのとき(collision);
+        触れ終わりのとき_ふれおわりのとき(collision.gameObject);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        衝突し始めたとき_しょうとつしはじめたとき(collision);
+        衝突し始めたとき_しょうとつしはじめたとき(collision.gameObject);
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        衝突しているとき_しょうとつしているとき(collision);
+        衝突しているとき_しょうとつしているとき(collision.gameObject);
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        衝突終わりのとき_しょうとつおわりのとき(collision);
+        衝突終わりのとき_しょうとつおわりのとき(collision.gameObject);
     }
 }
 static class GameObjectExtensions
@@ -169,6 +169,14 @@ static class GameObjectExtensions
         pos.z = (float)z;
         obj.transform.position = pos;
     }
+    public static void _角度を変更する_かくどをへんこうする(this GameObject obj, double x, double y, double z)
+    {
+        var r = obj.transform.rotation;
+        r.x = (float)x;
+        r.y = (float)y;
+        r.z = (float)z;
+        obj.transform.rotation = r;
+    }
     public static void _回転する_かいてんする(this GameObject obj, double x, double y, double z)
     {
         obj.transform.Rotate((float)x, (float)y, (float)z);
@@ -220,18 +228,6 @@ static class GameObjectExtensions
     {
         UnityEngine.Object.Destroy(obj);
     }
-    public static bool _と衝突したか_としょうとつしたか(this GameObject obj, GameObject targetObj)
-    {
-        var dPos = obj.transform.position - targetObj.transform.position;
-        var distance = dPos.magnitude;
-        var objHeight = obj.GetComponent<SpriteRenderer>().size.y / 2;
-        var targetObjHeight = targetObj.GetComponent<SpriteRenderer>().size.y / 2;
-        if (distance < objHeight + targetObjHeight)
-        {
-            return true;
-        }
-        return false;
-    }
     public static double _高さ_たかさ(this GameObject obj)
     {
         return (double)obj.GetComponent<SpriteRenderer>().size.y;
@@ -243,14 +239,16 @@ static class GameObjectExtensions
     public static double _左右の速さ(this GameObject obj)
     {
         var rb = obj.GetComponent<Rigidbody2D>();
-        return Math.Abs(rb.velocity.x);
+        var x = (int)rb.velocity.x * 10;
+        return Math.Abs((double)x);
     }
     public static double _上下の速さ(this GameObject obj)
     {
         var rb = obj.GetComponent<Rigidbody2D>();
-        return Math.Abs(rb.velocity.y);
+        var y = (int)rb.velocity.y * 10;
+        return Math.Abs((double)y);
     }
-    public static string _上下の向き(this GameObject obj)
+    public static string _上下の進んでる方向(this GameObject obj)
     {
         var rb = obj.GetComponent<Rigidbody2D>();
         if (rb.velocity.y > 0)
@@ -266,7 +264,7 @@ static class GameObjectExtensions
             return "下";
         }
     }
-    public static string _左右の向き(this GameObject obj)
+    public static string _左右の進んでる方向(this GameObject obj)
     {
         var rb = obj.GetComponent<Rigidbody2D>();
         if (rb.velocity.x > 0)
